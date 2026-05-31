@@ -597,3 +597,11 @@ tbody tr:first-child td { border-top: none; }
   .applications-table-desktop { display: none; }
   .applications-cards-mobile  { display: block; }
 }
+/* ── Interviews page responsive ─────────────────────────── */
+.interviews-table-desktop { display: block; }
+.interviews-cards-mobile  { display: none; }
+
+@media (max-width: 768px) {
+  .interviews-table-desktop { display: none; }
+  .interviews-cards-mobile  { display: block; }
+}
