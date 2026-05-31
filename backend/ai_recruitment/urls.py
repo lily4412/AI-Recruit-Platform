@@ -13,7 +13,7 @@ from core.views import LoginView, LogoutView, DashboardStatsView, UserProfileVie
 
 urlpatterns = [
 
-    # path("", home),   # 👈 ADD THIS
+    path("", home),   # 👈 ADD THIS
     # path("", views.home),  
     # Admin
     path("admin/", admin.site.urls),
