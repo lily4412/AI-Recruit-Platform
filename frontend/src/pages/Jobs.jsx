@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Plus, Search, RefreshCw, Eye, Pencil, Trash2, Send } from "lucide-react";
+import { Plus, Search, RefreshCw, Eye, Pencil, Trash2, Send, MapPin, Users, Briefcase } from "lucide-react";
 import { fetchJobs, createJob, updateJob, deleteJob } from "../store/slices/jobsSlice";
 import { jobsService } from "../services/jobsService";
 import { useMasterData } from "../hooks/useMasterData";
@@ -28,13 +28,13 @@ export default function Jobs() {
   const dispatch = useDispatch();
   const { items, total, loading } = useSelector((s) => s.jobs);
   const master = useMasterData();
-  const [page, setPage]         = useState(1);
-  const [search, setSearch]     = useState("");
+  const [page, setPage]               = useState(1);
+  const [search, setSearch]           = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing]   = useState(null);
+  const [modalOpen, setModalOpen]     = useState(false);
+  const [editing, setEditing]         = useState(null);
 
-  const { register, handleSubmit, reset, control, formState: { errors } } =
+  const { register, handleSubmit, reset, formState: { errors } } =
     useForm({ resolver: yupResolver(schema) });
 
   const load = useCallback(() => {
@@ -60,9 +60,7 @@ export default function Jobs() {
   };
 
   const onSubmit = async (data) => {
-    const action = editing
-      ? dispatch(updateJob({ id: editing.id, data }))
-      : dispatch(createJob(data));
+    const action = editing ? dispatch(updateJob({ id: editing.id, data })) : dispatch(createJob(data));
     const res = await action;
     if ((editing ? updateJob : createJob).fulfilled.match(res)) {
       toast.success(editing ? "Job updated!" : "Job created!");
@@ -78,11 +76,8 @@ export default function Jobs() {
   };
 
   const handlePublish = async (id) => {
-    try {
-      await jobsService.publish(id);
-      toast.success("Job published!");
-      load();
-    } catch { toast.error("Failed to publish"); }
+    try { await jobsService.publish(id); toast.success("Job published!"); load(); }
+    catch { toast.error("Failed to publish"); }
   };
 
   return (
@@ -90,11 +85,11 @@ export default function Jobs() {
       <div className="page-header">
         <div>
           <div className="page-title">Job Openings</div>
-          <div className="page-subtitle">{total} requisitions · {items.filter(j=>j.status==="open").length} open</div>
+          <div className="page-subtitle">{total} requisitions · {items.filter(j => j.status === "open").length} open</div>
         </div>
         <div className="page-actions">
-          <button className="btn btn-secondary btn-sm" onClick={load}><RefreshCw size={14}/></button>
-          <button className="btn btn-primary" onClick={openCreate}><Plus size={15}/> New Job</button>
+          <button className="btn btn-secondary btn-sm" onClick={load}><RefreshCw size={14} /></button>
+          <button className="btn btn-primary" onClick={openCreate}><Plus size={15} /> New Job</button>
         </div>
       </div>
 
@@ -117,7 +112,8 @@ export default function Jobs() {
         <EmptyState title="No jobs found" subtitle="Create your first job requisition" />
       ) : (
         <>
-          <div className="table-wrap">
+          {/* ── Desktop table ───────────────────────────── */}
+          <div className="table-wrap jobs-table-desktop">
             <table>
               <thead>
                 <tr>
@@ -130,7 +126,11 @@ export default function Jobs() {
                 {items.map((job) => (
                   <tr key={job.id}>
                     <td><span style={{ fontFamily: "monospace", fontSize: 12, color: "var(--accent)" }}>{job.job_id}</span></td>
-                    <td><Link to={`/jobs/${job.id}`} style={{ color: "var(--text-primary)", fontWeight: 600, textDecoration: "none" }}>{job.title}</Link></td>
+                    <td>
+                      <Link to={`/jobs/${job.id}`} style={{ color: "var(--text-primary)", fontWeight: 600, textDecoration: "none" }}>
+                        {job.title}
+                      </Link>
+                    </td>
                     <td style={{ color: "var(--text-secondary)" }}>{job.department_detail?.name || "—"}</td>
                     <td style={{ color: "var(--text-secondary)" }}>{job.level_detail?.name || "—"}</td>
                     <td style={{ color: "var(--text-secondary)", fontSize: 12 }}>{job.location_detail?.city || "—"}</td>
@@ -147,15 +147,19 @@ export default function Jobs() {
                     <td style={{ fontSize: 12, color: "var(--text-muted)" }}>{formatDate(job.created_at)}</td>
                     <td>
                       <div style={{ display: "flex", gap: 6 }}>
-                        <Link to={`/jobs/${job.id}`}><button className="btn btn-icon btn-ghost btn-sm" title="View"><Eye size={14}/></button></Link>
-                        <button className="btn btn-icon btn-ghost btn-sm" onClick={() => openEdit(job)} title="Edit"><Pencil size={14}/></button>
+                        <Link to={`/jobs/${job.id}`}>
+                          <button className="btn btn-icon btn-ghost btn-sm" title="View"><Eye size={14} /></button>
+                        </Link>
+                        <button className="btn btn-icon btn-ghost btn-sm" onClick={() => openEdit(job)} title="Edit"><Pencil size={14} /></button>
                         {job.status === "draft" && (
                           <button className="btn btn-icon btn-sm" onClick={() => handlePublish(job.id)}
                             title="Publish" style={{ background: "rgba(16,185,129,0.15)", color: "var(--green)" }}>
-                            <Send size={14}/>
+                            <Send size={14} />
                           </button>
                         )}
-                        <button className="btn btn-icon btn-danger btn-sm" onClick={() => handleDelete(job.id)} title="Delete"><Trash2 size={14}/></button>
+                        <button className="btn btn-icon btn-danger btn-sm" onClick={() => handleDelete(job.id)} title="Delete">
+                          <Trash2 size={14} />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -163,19 +167,102 @@ export default function Jobs() {
               </tbody>
             </table>
           </div>
+
+          {/* ── Mobile cards ────────────────────────────── */}
+          <div className="jobs-cards-mobile">
+            {items.map((job) => (
+              <div key={job.id} className="card card-sm" style={{ marginBottom: 10 }}>
+                {/* Top row: job id + status */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  <span style={{ fontFamily: "monospace", fontSize: 11.5, color: "var(--accent)" }}>{job.job_id}</span>
+                  <StatusBadge status={job.status} />
+                </div>
+
+                {/* Title */}
+                <Link to={`/jobs/${job.id}`} style={{ textDecoration: "none" }}>
+                  <h3 style={{ fontWeight: 700, fontSize: 15, color: "var(--text-primary)", marginBottom: 8, lineHeight: 1.3 }}>
+                    {job.title}
+                  </h3>
+                </Link>
+
+                {/* Meta pills */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 12 }}>
+                  {job.department_detail?.name && (
+                    <span style={{ fontSize: 12, color: "var(--text-muted)", display: "flex", alignItems: "center", gap: 4 }}>
+                      <Users size={12} />{job.department_detail.name}
+                    </span>
+                  )}
+                  {job.location_detail?.city && (
+                    <span style={{ fontSize: 12, color: "var(--text-muted)", display: "flex", alignItems: "center", gap: 4 }}>
+                      <MapPin size={12} />{job.location_detail.city}
+                    </span>
+                  )}
+                  {job.level_detail?.name && (
+                    <span style={{ fontSize: 12, color: "var(--text-muted)", display: "flex", alignItems: "center", gap: 4 }}>
+                      <Briefcase size={12} />{job.level_detail.name}
+                    </span>
+                  )}
+                </div>
+
+                {/* Stats row */}
+                <div style={{
+                  display: "flex", gap: 16, padding: "8px 0",
+                  borderTop: "1px solid var(--border-soft)",
+                  borderBottom: "1px solid var(--border-soft)",
+                  marginBottom: 12,
+                }}>
+                  <div style={{ fontSize: 12 }}>
+                    <span style={{ color: "var(--text-muted)" }}>Vacancies </span>
+                    <strong>{job.vacancies}</strong>
+                  </div>
+                  <div style={{ fontSize: 12 }}>
+                    <span style={{ color: "var(--text-muted)" }}>Applications </span>
+                    <Link to={`/applications?requisition=${job.id}`} style={{ color: "var(--accent)", fontWeight: 700, textDecoration: "none" }}>
+                      {job.application_count ?? 0}
+                    </Link>
+                  </div>
+                  {job.min_salary && (
+                    <div style={{ fontSize: 12 }}>
+                      <span style={{ color: "var(--text-muted)" }}>Salary </span>
+                      <strong>{formatSalary(job.min_salary)}–{formatSalary(job.max_salary)}</strong>
+                    </div>
+                  )}
+                </div>
+
+                {/* Actions row */}
+                <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+                  <Link to={`/jobs/${job.id}`}>
+                    <button className="btn btn-secondary btn-sm"><Eye size={13} /> View</button>
+                  </Link>
+                  <button className="btn btn-secondary btn-sm" onClick={() => openEdit(job)}><Pencil size={13} /> Edit</button>
+                  {job.status === "draft" && (
+                    <button className="btn btn-sm" onClick={() => handlePublish(job.id)}
+                      style={{ background: "rgba(16,185,129,0.15)", color: "var(--green)", border: "1px solid rgba(16,185,129,0.25)" }}>
+                      <Send size={13} /> Publish
+                    </button>
+                  )}
+                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(job.id)}><Trash2 size={13} /></button>
+                </div>
+              </div>
+            ))}
+          </div>
+
           <Pagination page={page} total={total} onChange={setPage} />
         </>
       )}
 
       {modalOpen && (
-        <Modal title={editing ? "Edit Job Requisition" : "New Job Requisition"}
-          onClose={() => setModalOpen(false)} wide
+        <Modal
+          title={editing ? "Edit Job Requisition" : "New Job Requisition"}
+          onClose={() => setModalOpen(false)}
+          wide
           footer={<>
             <button className="btn btn-secondary" onClick={() => setModalOpen(false)}>Cancel</button>
             <button className="btn btn-primary" onClick={handleSubmit(onSubmit)}>
               {editing ? "Save Changes" : "Create Job"}
             </button>
-          </>}>
+          </>}
+        >
           <form style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             <div className="form-group">
               <label className="form-label">Job Title *</label>
@@ -234,8 +321,7 @@ export default function Jobs() {
               </div>
               <div className="form-group">
                 <label className="form-label">AI Score Threshold (%)</label>
-                <input {...register("ai_score_threshold")} type="number" min="0" max="100"
-                  className="form-control" defaultValue={70} />
+                <input {...register("ai_score_threshold")} type="number" min="0" max="100" className="form-control" defaultValue={70} />
               </div>
             </div>
             <div className="form-group">
