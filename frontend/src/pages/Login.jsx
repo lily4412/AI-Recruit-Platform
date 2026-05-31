@@ -39,8 +39,9 @@ export default function Login() {
       display: "flex",
       fontFamily: "var(--font-body)",
     }}>
-      {/* ── Left panel — decorative ────────────────────── */}
-      <div style={{
+
+      {/* ── Left decorative panel — hidden on mobile ──── */}
+      <div className="login-left" style={{
         width: "42%", background: "#2c2416",
         display: "flex", flexDirection: "column",
         justifyContent: "space-between",
@@ -51,20 +52,17 @@ export default function Login() {
         <div style={{
           position: "absolute", bottom: -120, right: -120,
           width: 480, height: 480, borderRadius: "50%",
-          border: "80px solid rgba(196,98,45,0.08)",
-          pointerEvents: "none",
+          border: "80px solid rgba(196,98,45,0.08)", pointerEvents: "none",
         }} />
         <div style={{
           position: "absolute", bottom: -60, right: -60,
           width: 300, height: 300, borderRadius: "50%",
-          border: "40px solid rgba(196,98,45,0.12)",
-          pointerEvents: "none",
+          border: "40px solid rgba(196,98,45,0.12)", pointerEvents: "none",
         }} />
         <div style={{
           position: "absolute", top: 100, left: -80,
           width: 260, height: 260, borderRadius: "50%",
-          border: "50px solid rgba(255,255,255,0.03)",
-          pointerEvents: "none",
+          border: "50px solid rgba(255,255,255,0.03)", pointerEvents: "none",
         }} />
 
         {/* Logo */}
@@ -91,14 +89,13 @@ export default function Login() {
         <div style={{ position: "relative" }}>
           <h2 style={{
             fontFamily: "var(--font-display)", fontSize: 36, fontWeight: 700,
-            color: "#f0e8d8", lineHeight: 1.25, marginBottom: 18,
-            letterSpacing: "-0.5px",
+            color: "#f0e8d8", lineHeight: 1.25, marginBottom: 18, letterSpacing: "-0.5px",
           }}>
             Smarter hiring <br />
             <em style={{ color: "#f0a070", fontStyle: "italic" }}>starts here.</em>
           </h2>
           <p style={{ color: "#7a6e58", fontSize: 14, lineHeight: 1.7, maxWidth: 280 }}>
-            AI-powered IT recruitment platform for Amity University Online — streamlining every step from sourcing to offer.
+            AI-powered recruitment platform — streamlining every step from sourcing to offer.
           </p>
 
           {/* Stats row */}
@@ -112,23 +109,48 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Footer note */}
-        <p style={{ fontSize: 11, color: "#4a4030", position: "relative" }}>
-          MBA Final Year Project · Amity University Online · 2024-25
+        {/* subtle footer */}
+        <p style={{ fontSize: 11, color: "#3a3020", position: "relative" }}>
+          © 2025 AI Recruit Platform
         </p>
       </div>
 
       {/* ── Right panel — form ────────────────────────── */}
       <div style={{
         flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-        padding: "48px 52px",
+        padding: "32px 24px",
         background: "var(--bg-base)",
       }}>
         <div style={{ width: "100%", maxWidth: 380 }}>
-          <div style={{ marginBottom: 36 }}>
+
+          {/* Logo shown only on mobile (left panel is hidden) */}
+          <div className="login-mobile-logo" style={{
+            display: "none",
+            alignItems: "center", gap: 10,
+            marginBottom: 32,
+          }}>
+            <div style={{
+              width: 38, height: 38, borderRadius: 10,
+              background: "var(--accent)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 4px 14px rgba(196,98,45,0.35)",
+            }}>
+              <Sparkles size={18} color="#fff" strokeWidth={2} />
+            </div>
+            <div>
+              <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 17, color: "var(--text-primary)" }}>
+                AI Recruit
+              </div>
+              <div style={{ fontSize: 10, color: "var(--text-muted)", letterSpacing: "0.8px", textTransform: "uppercase" }}>
+                Platform
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 28 }}>
             <h1 style={{
-              fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700,
-              color: "var(--text-primary)", letterSpacing: "-0.4px", marginBottom: 8,
+              fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 700,
+              color: "var(--text-primary)", letterSpacing: "-0.4px", marginBottom: 6,
             }}>
               Welcome back
             </h1>
@@ -137,7 +159,7 @@ export default function Login() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             <div className="form-group">
               <label className="form-label">Username</label>
               <div style={{ position: "relative" }}>
@@ -147,7 +169,7 @@ export default function Login() {
                 }} />
                 <input
                   {...register("username")}
-                  placeholder="admin or priya.sharma"
+                  placeholder="Enter username"
                   className="form-control"
                   style={{ paddingLeft: 38 }}
                   autoComplete="username"
@@ -192,9 +214,9 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Demo credentials card */}
+          {/* Demo credentials */}
           <div style={{
-            marginTop: 28, padding: "14px 16px",
+            marginTop: 24, padding: "14px 16px",
             background: "var(--bg-elevated)",
             border: "1px solid var(--border)",
             borderRadius: 10,
@@ -206,21 +228,14 @@ export default function Login() {
             }}>
               Demo Credentials
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-              {/* <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
-                <span style={{ color: "var(--text-muted)" }}>Admin</span>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-secondary)" }}>
-                  admin / Admin@1234
-                </span>
-              </div> */}
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
-                <span style={{ color: "var(--text-muted)" }}>HR Manager</span>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-secondary)" }}>
-                  priya.sharma / HR@1234
-                </span>
-              </div>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
+              <span style={{ color: "var(--text-muted)" }}>HR Manager</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-secondary)" }}>
+                priya.sharma / HR@1234
+              </span>
             </div>
           </div>
+
         </div>
       </div>
     </div>
