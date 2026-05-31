@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from core.views import LoginView, LogoutView, DashboardStatsView, UserProfileView
 
-# from core.views import home
+from core.views import home
 # from core import views 
 
 urlpatterns = [
