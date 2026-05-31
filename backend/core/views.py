@@ -6,14 +6,11 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
-
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 from .serializers import LoginSerializer, UserSerializer
 from .utils import success_response, error_response
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-from rest_framework.permissions import AllowAny, IsAuthenticated, permission_classes
 
 # Import models lazily to avoid circular imports
 def _get_counts():
