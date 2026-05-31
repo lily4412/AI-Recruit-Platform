@@ -9,12 +9,12 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from core.views import LoginView, LogoutView, DashboardStatsView, UserProfileView
 
 # from core.views import home
-from core import views 
+# from core import views 
 
 urlpatterns = [
 
     # path("", home),   # 👈 ADD THIS
-    path("", views.home),  
+    # path("", views.home),  
     # Admin
     path("admin/", admin.site.urls),
 
