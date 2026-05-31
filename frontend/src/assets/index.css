@@ -617,3 +617,11 @@ tbody tr:first-child td { border-top: none; }
 @media (max-width: 400px) {
   .notfound-number { font-size: 56px; }
 }
+/* ── Offers page responsive ──────────────────────────────── */
+.offers-table-desktop { display: block; }
+.offers-cards-mobile  { display: none; }
+
+@media (max-width: 768px) {
+  .offers-table-desktop { display: none; }
+  .offers-cards-mobile  { display: block; }
+}
