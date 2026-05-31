@@ -461,3 +461,26 @@ tbody tr:first-child td { border-top: none; }
   .aitools-table-desktop { display: none; }
   .aitools-usage-mobile  { display: block; }
 }
+
+/* ── Analytics responsive ────────────────────────────────── */
+.analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.analytics-chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 1024px) {
+  .analytics-kpi-grid   { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .analytics-kpi-grid   { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .analytics-chart-grid { grid-template-columns: 1fr; gap: 14px; }
+}
