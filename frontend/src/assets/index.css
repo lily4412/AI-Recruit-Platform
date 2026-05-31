@@ -589,3 +589,11 @@ tbody tr:first-child td { border-top: none; }
   .appdetail-layout { grid-template-columns: 1fr; }
   .appdetail-header { flex-direction: column; align-items: flex-start; }
 }
+/* ── Applications page responsive ───────────────────────── */
+.applications-table-desktop { display: block; }
+.applications-cards-mobile  { display: none; }
+
+@media (max-width: 768px) {
+  .applications-table-desktop { display: none; }
+  .applications-cards-mobile  { display: block; }
+}
