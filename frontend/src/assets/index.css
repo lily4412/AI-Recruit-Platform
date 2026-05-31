@@ -525,3 +525,11 @@ tbody tr:first-child td { border-top: none; }
   .jobdetail-app-row  { flex-direction: column; align-items: flex-start; }
   .jobdetail-app-meta { width: 100%; justify-content: space-between; margin-top: 8px; }
 }
+/* ── Jobs page responsive ────────────────────────────────── */
+.jobs-table-desktop { display: block; }
+.jobs-cards-mobile  { display: none; }
+
+@media (max-width: 768px) {
+  .jobs-table-desktop { display: none; }
+  .jobs-cards-mobile  { display: block; }
+}
