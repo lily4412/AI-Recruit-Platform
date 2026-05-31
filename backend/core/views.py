@@ -10,6 +10,9 @@ from rest_framework_simplejwt.exceptions import TokenError
 from .serializers import LoginSerializer, UserSerializer
 from .utils import success_response, error_response
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 # Import models lazily to avoid circular imports
 def _get_counts():
     from main.models import JobRequisition, Candidate, Application
@@ -101,3 +104,11 @@ class DashboardStatsView(APIView):
             return success_response(counts, "Dashboard stats retrieved")
         except Exception as e:
             return success_response({}, "Stats loading")
+
+
+@api_view(["GET"])
+def home(request):
+    return Response({
+        "message": "AI Recruitment API is running 🚀",
+        "status": "success"
+    })
