@@ -562,3 +562,11 @@ tbody tr:first-child td { border-top: none; }
   .candidatedetail-header  { flex-direction: column; align-items: flex-start; }
   .candidatedetail-contact { grid-template-columns: 1fr; gap: 8px; }
 }
+/* ── Candidates page responsive ─────────────────────────── */
+.candidates-table-desktop { display: block; }
+.candidates-cards-mobile  { display: none; }
+
+@media (max-width: 768px) {
+  .candidates-table-desktop { display: none; }
+  .candidates-cards-mobile  { display: block; }
+}
