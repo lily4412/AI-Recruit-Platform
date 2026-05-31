@@ -5,7 +5,7 @@
 
 ## Project Overview
 
-This full-stack web application serves as the practical demonstration component of the MBA dissertation project examining AI applications in IT recruitment. The system demonstrates how artificial intelligence can be integrated into recruitment workflows to improve efficiency, reduce time-to-fill, and enhance the quality of hiring decisions.
+This full-stack web application serves as the practical demonstration component of examining AI applications in IT recruitment. The system demonstrates how artificial intelligence can be integrated into recruitment workflows to improve efficiency, reduce time-to-fill, and enhance the quality of hiring decisions.
 
 ### Key Features
 - 🤖 **AI Resume Scoring** — Automated resume quality assessment (0-100 score)
