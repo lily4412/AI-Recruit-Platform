@@ -570,3 +570,22 @@ tbody tr:first-child td { border-top: none; }
   .candidates-table-desktop { display: none; }
   .candidates-cards-mobile  { display: block; }
 }
+/* ── ApplicationDetail responsive ───────────────────────── */
+.appdetail-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  align-items: start;
+}
+
+.appdetail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .appdetail-layout { grid-template-columns: 1fr; }
+  .appdetail-header { flex-direction: column; align-items: flex-start; }
+}
