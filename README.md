@@ -1,7 +1,9 @@
 # AI Recruitment Management System
 
 **Project Title:** Utilizing Artificial Intelligence in IT Recruitment: Enhancing Efficiency and Effectiveness  
-
+```md
+🔗 **Live Demo:** [ai-recruit-platform.vercel.app](https://ai-recruit-platform.vercel.app/)
+```
 ---
 
 ## Project Overview
@@ -224,6 +226,7 @@ Bulk ranking orders all applications for a job by AI match score, enabling recru
 ## Screenshots
 
 > <img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/f16ae544-548c-4c5b-ab1a-eae1046dd8ca" />
+<br/>
 > <img width="1919" height="861" alt="image" src="https://github.com/user-attachments/assets/93495d6b-3432-4646-a84e-97b4355f6de2" />
 
 ---
