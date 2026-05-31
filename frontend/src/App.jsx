@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Sidebar from "./components/layout/Sidebar";
@@ -18,12 +19,15 @@ import NotFound     from "./pages/NotFound";
 
 function ProtectedLayout() {
   const token = useSelector((s) => s.auth.accessToken);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   if (!token) return <Navigate to="/login" replace />;
+
   return (
     <div className="app-layout">
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="main-content">
-        <Header />
+        <Header onMenuClick={() => setSidebarOpen(true)} />
         <div className="page-body">
           <Outlet />
         </div>
