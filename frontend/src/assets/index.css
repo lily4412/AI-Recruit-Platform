@@ -358,3 +358,34 @@ tbody tr:first-child td { border-top: none; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .page-header { flex-direction: column; gap: 12px; }
 }
+
+/* ── Mobile sidebar & header ─────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Header spans full width on mobile */
+  .app-header { left: 0 !important; padding: 0 16px !important; }
+
+  /* Show hamburger button */
+  .hamburger-btn { display: flex !important; }
+
+  /* Hide search bar on mobile (too cramped) */
+  .search-hint { display: none !important; }
+
+  /* Hide username text, keep avatar */
+  .user-name { display: none !important; }
+
+  /* Hide breadcrumb section label */
+  .breadcrumb-section { display: none !important; }
+
+  /* Sidebar: hidden off-screen by default */
+  .app-sidebar { transform: translateX(-100%) !important; }
+
+  /* Sidebar: slide in when open */
+  .app-sidebar.sidebar-open { transform: translateX(0) !important; }
+
+  /* Show the close button inside sidebar */
+  .sidebar-close-btn { display: flex !important; }
+
+  /* Show the backdrop overlay */
+  .sidebar-overlay { display: block !important; }
+}
