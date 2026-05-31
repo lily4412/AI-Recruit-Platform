@@ -1,4 +1,4 @@
-import { Bell, Search } from "lucide-react";
+import { Bell, Search, Menu } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -13,14 +13,15 @@ const BREADCRUMBS = {
   "/analytics":    ["Intelligence", "Analytics"],
 };
 
-export default function Header() {
+export default function Header({ onMenuClick }) {
   const location = useLocation();
   const [section, title] = BREADCRUMBS[location.pathname] || ["", "AI Recruitment"];
   const user = useSelector((s) => s.auth.user);
 
   return (
     <header style={{
-      position: "fixed", top: 0, left: "var(--sidebar-w)", right: 0,
+      position: "fixed", top: 0, right: 0,
+      left: "var(--sidebar-w)",   // desktop: offset by sidebar
       height: "var(--header-h)",
       background: "rgba(250,248,243,0.92)",
       backdropFilter: "blur(12px)",
@@ -28,38 +29,62 @@ export default function Header() {
       zIndex: 90,
       display: "flex", alignItems: "center",
       justifyContent: "space-between",
-      padding: "0 32px",
-    }}>
-      {/* ── Breadcrumb title ─────────────────────────────── */}
-      <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-        {section && (
-          <>
-            <span style={{ fontSize: 12.5, color: "var(--text-muted)", fontWeight: 500, letterSpacing: "0.2px" }}>
-              {section}
-            </span>
-            <span style={{ color: "var(--border)", fontSize: 12 }}>/</span>
-          </>
-        )}
-        <h1 style={{
-          fontFamily: "var(--font-display)",
-          fontSize: 16.5, fontWeight: 700,
-          color: "var(--text-primary)", letterSpacing: "-0.2px",
-        }}>
-          {title}
-        </h1>
+      padding: "0 24px",
+    }}
+      className="app-header"
+    >
+      {/* ── Left: hamburger (mobile) + breadcrumb ────────── */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {/* Hamburger — hidden on desktop via CSS */}
+        <button
+          onClick={onMenuClick}
+          className="hamburger-btn"
+          style={{
+            display: "none", // shown on mobile via CSS
+            width: 36, height: 36, borderRadius: 8,
+            background: "var(--bg-elevated)",
+            border: "1px solid var(--border)",
+            alignItems: "center", justifyContent: "center",
+            cursor: "pointer", color: "var(--text-secondary)",
+            flexShrink: 0,
+          }}
+        >
+          <Menu size={17} />
+        </button>
+
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+          {section && (
+            <>
+              <span style={{ fontSize: 12.5, color: "var(--text-muted)", fontWeight: 500, letterSpacing: "0.2px" }}
+                className="breadcrumb-section">
+                {section}
+              </span>
+              <span style={{ color: "var(--border)", fontSize: 12 }} className="breadcrumb-section">/</span>
+            </>
+          )}
+          <h1 style={{
+            fontFamily: "var(--font-display)",
+            fontSize: 16.5, fontWeight: 700,
+            color: "var(--text-primary)", letterSpacing: "-0.2px",
+          }}>
+            {title}
+          </h1>
+        </div>
       </div>
 
       {/* ── Right controls ───────────────────────────────── */}
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        {/* Search hint */}
-        <div style={{
-          display: "flex", alignItems: "center", gap: 8,
-          padding: "7px 14px", borderRadius: 8,
-          background: "var(--bg-elevated)",
-          border: "1px solid var(--border)",
-          color: "var(--text-muted)", fontSize: 13,
-          cursor: "pointer",
-        }}>
+        {/* Search hint — hidden on small mobile */}
+        <div
+          className="search-hint"
+          style={{
+            display: "flex", alignItems: "center", gap: 8,
+            padding: "7px 14px", borderRadius: 8,
+            background: "var(--bg-elevated)",
+            border: "1px solid var(--border)",
+            color: "var(--text-muted)", fontSize: 13,
+            cursor: "pointer",
+          }}>
           <Search size={14} />
           <span style={{ fontSize: 12.5 }}>Quick search…</span>
           <kbd style={{
@@ -84,8 +109,7 @@ export default function Header() {
           <span style={{
             position: "absolute", top: 7, right: 7,
             width: 6, height: 6, borderRadius: "50%",
-            background: "var(--accent)",
-            border: "1.5px solid var(--bg-base)",
+            background: "var(--accent)", border: "1.5px solid var(--bg-base)",
           }} />
         </button>
 
@@ -94,8 +118,7 @@ export default function Header() {
           display: "flex", alignItems: "center", gap: 8,
           padding: "5px 12px 5px 6px",
           background: "var(--bg-elevated)", border: "1px solid var(--border)",
-          borderRadius: 20, cursor: "pointer",
-          transition: "all 0.15s",
+          borderRadius: 20, cursor: "pointer", transition: "all 0.15s",
         }}>
           <div style={{
             width: 26, height: 26, borderRadius: "50%",
@@ -105,7 +128,8 @@ export default function Header() {
           }}>
             {(user?.first_name?.[0] || user?.username?.[0] || "U").toUpperCase()}
           </div>
-          <span style={{ fontSize: 13, fontWeight: 500, color: "var(--text-primary)" }}>
+          <span style={{ fontSize: 13, fontWeight: 500, color: "var(--text-primary)" }}
+            className="user-name">
             {user?.first_name || user?.username || "User"}
           </span>
         </div>
