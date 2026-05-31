@@ -389,3 +389,9 @@ tbody tr:first-child td { border-top: none; }
   /* Show the backdrop overlay */
   .sidebar-overlay { display: block !important; }
 }
+
+/* ── Login page mobile ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .login-left          { display: none !important; }
+  .login-mobile-logo   { display: flex !important; }
+}
