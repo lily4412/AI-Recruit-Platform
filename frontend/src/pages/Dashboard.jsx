@@ -10,7 +10,6 @@ import { Briefcase, Users, FileText, Bot, CheckCircle, Clock, Award, TrendingUp 
 import { Loader, StatusBadge, AIScoreBar, SectionHeader } from "../components/ui/index";
 import { formatDate } from "../utils/helpers";
 
-// Warm editorial palette for charts
 const C = ["#c4622d","#2d7a4f","#a06c10","#2563a8","#6d4c9e","#c0392b"];
 
 const funnelData = [
@@ -32,10 +31,10 @@ const monthlyData = [
 ];
 
 const toolUsage = [
-  { name: "ATS Screening",  value: 42 },
-  { name: "AI Chatbot",     value: 24 },
-  { name: "Video AI",       value: 18 },
-  { name: "Predictive",     value: 16 },
+  { name: "ATS Screening", value: 42 },
+  { name: "AI Chatbot",    value: 24 },
+  { name: "Video AI",      value: 18 },
+  { name: "Predictive",    value: 16 },
 ];
 
 const Tip = ({ active, payload, label }) => {
@@ -69,20 +68,20 @@ export default function Dashboard() {
   if (loading) return <Loader />;
 
   const cards = [
-    { label: "Open Jobs",        value: stats?.open_jobs ?? 0,           icon: Briefcase,   color: "var(--accent)",  bg: "rgba(196,98,45,0.1)"   },
-    { label: "Total Candidates", value: stats?.total_candidates ?? 0,    icon: Users,       color: "var(--green)",   bg: "var(--green-bg)"        },
-    { label: "Applications",     value: stats?.total_applications ?? 0,  icon: FileText,    color: "var(--blue)",    bg: "var(--blue-bg)"         },
-    { label: "AI Tools Active",  value: stats?.ai_tools_active ?? 7,     icon: Bot,         color: "var(--purple)",  bg: "var(--purple-bg)"       },
-    { label: "Shortlisted",      value: stats?.shortlisted ?? 0,         icon: CheckCircle, color: "var(--green)",   bg: "var(--green-bg)"        },
-    { label: "Interviews Sched", value: stats?.interviews_scheduled ?? 0,icon: Clock,       color: "var(--yellow)",  bg: "var(--yellow-bg)"       },
-    { label: "Offers Extended",  value: stats?.offers_extended ?? 0,     icon: Award,       color: "var(--accent)",  bg: "rgba(196,98,45,0.1)"   },
-    { label: "Offers Accepted",  value: stats?.offers_accepted ?? 0,     icon: TrendingUp,  color: "var(--green)",   bg: "var(--green-bg)"        },
+    { label: "Open Jobs",        value: stats?.open_jobs ?? 0,            icon: Briefcase,   color: "var(--accent)",  bg: "rgba(196,98,45,0.1)"  },
+    { label: "Total Candidates", value: stats?.total_candidates ?? 0,     icon: Users,       color: "var(--green)",   bg: "var(--green-bg)"       },
+    { label: "Applications",     value: stats?.total_applications ?? 0,   icon: FileText,    color: "var(--blue)",    bg: "var(--blue-bg)"        },
+    { label: "AI Tools Active",  value: stats?.ai_tools_active ?? 7,      icon: Bot,         color: "var(--purple)",  bg: "var(--purple-bg)"      },
+    { label: "Shortlisted",      value: stats?.shortlisted ?? 0,          icon: CheckCircle, color: "var(--green)",   bg: "var(--green-bg)"       },
+    { label: "Interviews Sched", value: stats?.interviews_scheduled ?? 0, icon: Clock,       color: "var(--yellow)",  bg: "var(--yellow-bg)"      },
+    { label: "Offers Extended",  value: stats?.offers_extended ?? 0,      icon: Award,       color: "var(--accent)",  bg: "rgba(196,98,45,0.1)"  },
+    { label: "Offers Accepted",  value: stats?.offers_accepted ?? 0,      icon: TrendingUp,  color: "var(--green)",   bg: "var(--green-bg)"       },
   ];
 
   return (
     <div>
       {/* Welcome header */}
-      <div style={{ marginBottom: 28, paddingBottom: 24, borderBottom: "1px solid var(--border-soft)" }}>
+      <div style={{ marginBottom: 24, paddingBottom: 20, borderBottom: "1px solid var(--border-soft)" }}>
         <h2 style={{
           fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700,
           color: "var(--text-primary)", letterSpacing: "-0.3px",
@@ -94,8 +93,8 @@ export default function Dashboard() {
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 28 }}>
+      {/* Stats Grid — 4 cols → 2 cols → 2 cols (via CSS class) */}
+      <div className="dashboard-stats-grid">
         {cards.map(({ label, value, icon: Icon, color, bg }) => (
           <div key={label} className="stat-card">
             <div className="stat-icon" style={{ background: bg }}>
@@ -107,11 +106,11 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Charts row 1 */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 18, marginBottom: 18 }}>
+      {/* Charts row 1 — side by side → stacked */}
+      <div className="dashboard-chart-row" style={{ marginBottom: 18 }}>
         <div className="card">
           <SectionHeader title="Monthly Recruitment Trend" subtitle="Applications · AI Screened · Hired" />
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={200}>
             <LineChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-soft)" />
               <XAxis dataKey="month" tick={{ fill: "var(--text-muted)", fontSize: 11, fontFamily: "var(--font-body)" }} axisLine={false} tickLine={false} />
@@ -127,9 +126,9 @@ export default function Dashboard() {
 
         <div className="card">
           <SectionHeader title="AI Tool Usage Share" />
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={200}>
             <PieChart>
-              <Pie data={toolUsage} cx="50%" cy="50%" innerRadius={52} outerRadius={80}
+              <Pie data={toolUsage} cx="50%" cy="50%" innerRadius={50} outerRadius={76}
                    dataKey="value" paddingAngle={4}>
                 {toolUsage.map((_, i) => <Cell key={i} fill={C[i % C.length]} />)}
               </Pie>
@@ -141,14 +140,14 @@ export default function Dashboard() {
       </div>
 
       {/* Charts row 2 */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 18, marginBottom: 18 }}>
+      <div className="dashboard-chart-row" style={{ marginBottom: 18 }}>
         <div className="card">
           <SectionHeader title="Recruitment Funnel" subtitle="Full pipeline overview" />
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={200}>
             <BarChart data={funnelData} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-soft)" horizontal={false} />
               <XAxis type="number" tick={{ fill: "var(--text-muted)", fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis dataKey="stage" type="category" tick={{ fill: "var(--text-secondary)", fontSize: 11 }} axisLine={false} tickLine={false} width={88} />
+              <YAxis dataKey="stage" type="category" tick={{ fill: "var(--text-secondary)", fontSize: 11 }} axisLine={false} tickLine={false} width={82} />
               <Tooltip content={<Tip />} />
               <Bar dataKey="count" radius={[0,6,6,0]} name="Candidates">
                 {funnelData.map((_, i) => <Cell key={i} fill={C[i % C.length]} />)}
@@ -211,12 +210,12 @@ export default function Dashboard() {
           </h3>
           <span className="badge badge-orange" style={{ fontSize: 10 }}>Live Stats</span>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14 }}>
+        <div className="dashboard-impact-grid">
           {[
-            ["78.4%",   "Avg AI Match Score",    "across screened apps"],
-            ["63%",     "Auto-Shortlisted",       "of AI-screened candidates"],
-            ["< 4 hrs", "Time-to-Shortlist",      "vs 3 weeks manually"],
-            ["92.5%",   "Screening Accuracy",     "ResumeAI Pro benchmark"],
+            ["78.4%",   "Avg AI Match Score",  "across screened apps"],
+            ["63%",     "Auto-Shortlisted",    "of AI-screened candidates"],
+            ["< 4 hrs", "Time-to-Shortlist",   "vs 3 weeks manually"],
+            ["92.5%",   "Screening Accuracy",  "ResumeAI Pro benchmark"],
           ].map(([v, l, s]) => (
             <div key={l} style={{
               textAlign: "center", padding: "14px 10px",
