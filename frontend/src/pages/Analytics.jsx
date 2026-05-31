@@ -16,35 +16,48 @@ const Tip = ({ active, payload, label }) => {
 };
 
 const sourceData = [
-  { source: "LinkedIn", count: 52, hired: 8 }, { source: "Job Portal", count: 48, hired: 6 },
-  { source: "Referral",  count: 28, hired: 5 }, { source: "Campus",    count: 35, hired: 4 },
-  { source: "AI Sourced",count: 18, hired: 3 }, { source: "Agency",    count: 15, hired: 2 },
+  { source: "LinkedIn",  count: 52, hired: 8 },
+  { source: "Job Portal",count: 48, hired: 6 },
+  { source: "Referral",  count: 28, hired: 5 },
+  { source: "Campus",    count: 35, hired: 4 },
+  { source: "AI Sourced",count: 18, hired: 3 },
+  { source: "Agency",    count: 15, hired: 2 },
 ];
 const skillDemand = [
-  { skill: "Python", demand: 85 }, { skill: "React", demand: 72 },
-  { skill: "AWS", demand: 68 },    { skill: "ML/AI", demand: 65 },
-  { skill: "Java", demand: 58 },   { skill: "DevOps", demand: 55 },
-  { skill: "TypeScript", demand: 50 }, { skill: "Go", demand: 38 },
+  { skill: "Python",     demand: 85 }, { skill: "React",      demand: 72 },
+  { skill: "AWS",        demand: 68 }, { skill: "ML/AI",      demand: 65 },
+  { skill: "Java",       demand: 58 }, { skill: "DevOps",     demand: 55 },
+  { skill: "TypeScript", demand: 50 }, { skill: "Go",         demand: 38 },
 ];
 const deptHiring = [
-  { dept: "Engineering", target: 20, achieved: 14 }, { dept: "Data Science", target: 10, achieved: 7 },
-  { dept: "DevOps", target: 8, achieved: 5 },        { dept: "QA", target: 6, achieved: 4 },
-  { dept: "Product", target: 5, achieved: 3 },
+  { dept: "Engineering", target: 20, achieved: 14 },
+  { dept: "Data Science",target: 10, achieved: 7  },
+  { dept: "DevOps",      target: 8,  achieved: 5  },
+  { dept: "QA",          target: 6,  achieved: 4  },
+  { dept: "Product",     target: 5,  achieved: 3  },
 ];
 const aiVsManual = [
-  { month: "Jan", ai_time: 12, manual_time: 38 }, { month: "Feb", ai_time: 11, manual_time: 40 },
-  { month: "Mar", ai_time: 10, manual_time: 42 }, { month: "Apr", ai_time: 9,  manual_time: 45 },
-  { month: "May", ai_time: 8,  manual_time: 43 }, { month: "Jun", ai_time: 7,  manual_time: 41 },
+  { month: "Jan", ai_time: 12, manual_time: 38 },
+  { month: "Feb", ai_time: 11, manual_time: 40 },
+  { month: "Mar", ai_time: 10, manual_time: 42 },
+  { month: "Apr", ai_time: 9,  manual_time: 45 },
+  { month: "May", ai_time: 8,  manual_time: 43 },
+  { month: "Jun", ai_time: 7,  manual_time: 41 },
 ];
 const radarData = [
-  { metric: "Speed",    AI: 92, Manual: 45 }, { metric: "Accuracy", AI: 88, Manual: 62 },
-  { metric: "Cost",     AI: 85, Manual: 40 }, { metric: "Scale",    AI: 95, Manual: 30 },
-  { metric: "Bias",     AI: 78, Manual: 55 }, { metric: "UX",       AI: 72, Manual: 70 },
+  { metric: "Speed",    AI: 92, Manual: 45 },
+  { metric: "Accuracy", AI: 88, Manual: 62 },
+  { metric: "Cost",     AI: 85, Manual: 40 },
+  { metric: "Scale",    AI: 95, Manual: 30 },
+  { metric: "Bias",     AI: 78, Manual: 55 },
+  { metric: "UX",       AI: 72, Manual: 70 },
 ];
 
 const SH = ({ title }) => (
-  <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 14.5,
-               color: "var(--text-primary)", marginBottom: 18 }}>{title}</h3>
+  <h3 style={{
+    fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 14.5,
+    color: "var(--text-primary)", marginBottom: 18,
+  }}>{title}</h3>
 );
 
 export default function Analytics() {
@@ -53,12 +66,12 @@ export default function Analytics() {
       <div className="page-header">
         <div>
           <div className="page-title">Recruitment Analytics</div>
-          <div className="page-subtitle">AI vs Traditional — Data-driven insights for your MBA project</div>
+          <div className="page-subtitle">AI vs Traditional — Data-driven insights</div>
         </div>
       </div>
 
-      {/* KPIs */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 24 }}>
+      {/* KPI Cards */}
+      <div className="analytics-kpi-grid">
         {[
           { l: "Avg Time-to-Fill (AI)", v: "28.6 days", s: "↓ 44% vs manual",  c: "var(--accent)"  },
           { l: "Cost-per-Hire (AI)",    v: "₹58.4K",    s: "↓ 37% vs manual",  c: "var(--green)"   },
@@ -73,10 +86,12 @@ export default function Analytics() {
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginBottom: 18 }}>
+      {/* Charts 2-col grid → 1-col on mobile */}
+      <div className="analytics-chart-grid">
+
         <div className="card">
           <SH title="AI vs Manual — Time-to-Fill (Days)" />
-          <ResponsiveContainer width="100%" height={230}>
+          <ResponsiveContainer width="100%" height={220}>
             <LineChart data={aiVsManual}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-soft)" />
               <XAxis dataKey="month" tick={{ fill: "var(--text-muted)", fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -91,7 +106,7 @@ export default function Analytics() {
 
         <div className="card">
           <SH title="AI vs Manual — Performance Radar" />
-          <ResponsiveContainer width="100%" height={230}>
+          <ResponsiveContainer width="100%" height={220}>
             <RadarChart data={radarData}>
               <PolarGrid stroke="var(--border)" />
               <PolarAngleAxis dataKey="metric" tick={{ fill: "var(--text-muted)", fontSize: 11 }} />
@@ -104,7 +119,7 @@ export default function Analytics() {
 
         <div className="card">
           <SH title="Candidate Source Effectiveness" />
-          <ResponsiveContainer width="100%" height={230}>
+          <ResponsiveContainer width="100%" height={220}>
             <BarChart data={sourceData}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-soft)" />
               <XAxis dataKey="source" tick={{ fill: "var(--text-muted)", fontSize: 10 }} axisLine={false} tickLine={false} />
@@ -119,11 +134,11 @@ export default function Analytics() {
 
         <div className="card">
           <SH title="Top Skill Demand in IT Hiring" />
-          <ResponsiveContainer width="100%" height={230}>
+          <ResponsiveContainer width="100%" height={220}>
             <BarChart data={skillDemand} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-soft)" horizontal={false} />
               <XAxis type="number" domain={[0,100]} tick={{ fill: "var(--text-muted)", fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis dataKey="skill" type="category" tick={{ fill: "var(--text-secondary)", fontSize: 11 }} axisLine={false} tickLine={false} width={80} />
+              <YAxis dataKey="skill" type="category" tick={{ fill: "var(--text-secondary)", fontSize: 11 }} axisLine={false} tickLine={false} width={76} />
               <Tooltip content={<Tip />} />
               <Bar dataKey="demand" name="Demand %" radius={[0,6,6,0]}>
                 {skillDemand.map((_, i) => <Cell key={i} fill={C[i % C.length]} />)}
@@ -131,9 +146,11 @@ export default function Analytics() {
             </BarChart>
           </ResponsiveContainer>
         </div>
+
       </div>
 
-      <div className="card">
+      {/* Full-width bottom chart */}
+      <div className="card" style={{ marginTop: 18 }}>
         <SH title="Departmental Hiring — Target vs Achieved" />
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={deptHiring}>
