@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Plus, Search, RefreshCw, Eye, Pencil, Trash2, Cpu } from "lucide-react";
+import { Plus, Search, RefreshCw, Eye, Pencil, Trash2, Cpu, Mail, Briefcase } from "lucide-react";
 import { fetchCandidates, createCandidate, updateCandidate, deleteCandidate } from "../store/slices/candidatesSlice";
 import { candidatesService } from "../services/candidatesService";
 import { useMasterData } from "../hooks/useMasterData";
@@ -13,10 +13,10 @@ import { formatDate, debounce } from "../utils/helpers";
 import toast from "react-hot-toast";
 
 const schema = yup.object({
-  first_name: yup.string().required("First name required"),
-  last_name:  yup.string().required("Last name required"),
-  email:      yup.string().email("Invalid email").required("Email required"),
-  phone:      yup.string().required("Phone required"),
+  first_name:       yup.string().required("First name required"),
+  last_name:        yup.string().required("Last name required"),
+  email:            yup.string().email("Invalid email").required("Email required"),
+  phone:            yup.string().required("Phone required"),
   total_experience: yup.number().min(0).required(),
 });
 
@@ -24,8 +24,8 @@ export default function Candidates() {
   const dispatch = useDispatch();
   const { items, total, loading } = useSelector((s) => s.candidates);
   const master = useMasterData();
-  const [page, setPage]     = useState(1);
-  const [search, setSearch] = useState("");
+  const [page, setPage]           = useState(1);
+  const [search, setSearch]       = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing]     = useState(null);
 
@@ -42,10 +42,12 @@ export default function Candidates() {
   const openCreate = () => { setEditing(null); reset({}); setModalOpen(true); };
   const openEdit   = (c) => {
     setEditing(c);
-    reset({ first_name: c.first_name, last_name: c.last_name, email: c.email,
-            phone: c.phone, total_experience: c.total_experience,
-            current_company: c.current_company, current_title: c.current_title,
-            source: c.source, linkedin_url: c.linkedin_url, github_url: c.github_url });
+    reset({
+      first_name: c.first_name, last_name: c.last_name, email: c.email,
+      phone: c.phone, total_experience: c.total_experience,
+      current_company: c.current_company, current_title: c.current_title,
+      source: c.source, linkedin_url: c.linkedin_url, github_url: c.github_url,
+    });
     setModalOpen(true);
   };
 
@@ -83,8 +85,8 @@ export default function Candidates() {
           <div className="page-subtitle">{total} profiles in talent pool</div>
         </div>
         <div className="page-actions">
-          <button className="btn btn-secondary btn-sm" onClick={load}><RefreshCw size={14}/></button>
-          <button className="btn btn-primary" onClick={openCreate}><Plus size={15}/> Add Candidate</button>
+          <button className="btn btn-secondary btn-sm" onClick={load}><RefreshCw size={14} /></button>
+          <button className="btn btn-primary" onClick={openCreate}><Plus size={15} /> Add Candidate</button>
         </div>
       </div>
 
@@ -100,7 +102,8 @@ export default function Candidates() {
         <EmptyState title="No candidates found" subtitle="Add your first candidate to the talent pool" />
       ) : (
         <>
-          <div className="table-wrap">
+          {/* ── Desktop table ───────────────────────────── */}
+          <div className="table-wrap candidates-table-desktop">
             <table>
               <thead>
                 <tr>
@@ -120,7 +123,7 @@ export default function Candidates() {
                     </td>
                     <td style={{ fontSize: 12.5, color: "var(--text-secondary)" }}>{c.email}</td>
                     <td style={{ fontSize: 12.5, color: "var(--text-secondary)" }}>
-                      {c.current_title}<br/>
+                      {c.current_title}<br />
                       <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{c.current_company}</span>
                     </td>
                     <td style={{ textAlign: "center" }}>{c.total_experience} yrs</td>
@@ -134,13 +137,15 @@ export default function Candidates() {
                     <td style={{ fontSize: 12, color: "var(--text-muted)" }}>{formatDate(c.created_at)}</td>
                     <td>
                       <div style={{ display: "flex", gap: 6 }}>
-                        <Link to={`/candidates/${c.id}`}><button className="btn btn-icon btn-ghost btn-sm" title="View"><Eye size={14}/></button></Link>
-                        <button className="btn btn-icon btn-ghost btn-sm" onClick={() => openEdit(c)} title="Edit"><Pencil size={14}/></button>
+                        <Link to={`/candidates/${c.id}`}>
+                          <button className="btn btn-icon btn-ghost btn-sm" title="View"><Eye size={14} /></button>
+                        </Link>
+                        <button className="btn btn-icon btn-ghost btn-sm" onClick={() => openEdit(c)} title="Edit"><Pencil size={14} /></button>
                         <button className="btn btn-icon btn-sm" onClick={() => handleAIScore(c.id)} title="Run AI Score"
                           style={{ background: "rgba(196,98,45,0.1)", color: "var(--accent)" }}>
-                          <Cpu size={14}/>
+                          <Cpu size={14} />
                         </button>
-                        <button className="btn btn-icon btn-danger btn-sm" onClick={() => handleDelete(c.id)}><Trash2 size={14}/></button>
+                        <button className="btn btn-icon btn-danger btn-sm" onClick={() => handleDelete(c.id)}><Trash2 size={14} /></button>
                       </div>
                     </td>
                   </tr>
@@ -148,19 +153,98 @@ export default function Candidates() {
               </tbody>
             </table>
           </div>
+
+          {/* ── Mobile cards ────────────────────────────── */}
+          <div className="candidates-cards-mobile">
+            {items.map((c) => (
+              <div key={c.id} className="card card-sm" style={{ marginBottom: 10 }}>
+                {/* Top: ID + source badge */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  <span style={{ fontFamily: "monospace", fontSize: 11, color: "var(--accent)" }}>{c.candidate_id}</span>
+                  <span className="badge badge-gray" style={{ fontSize: 10 }}>{c.source_display || c.source}</span>
+                </div>
+
+                {/* Name + title */}
+                <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 10 }}>
+                  <div style={{
+                    width: 42, height: 42, flexShrink: 0, borderRadius: "50%",
+                    background: "linear-gradient(135deg,var(--accent),var(--purple))",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontWeight: 800, fontSize: 16, color: "#fff",
+                  }}>
+                    {c.first_name?.[0]}
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <Link to={`/candidates/${c.id}`} style={{ textDecoration: "none" }}>
+                      <p style={{ fontWeight: 700, fontSize: 14, color: "var(--text-primary)", lineHeight: 1.3 }}>
+                        {c.full_name || `${c.first_name} ${c.last_name}`}
+                      </p>
+                    </Link>
+                    <p style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 2 }}>
+                      {c.current_title}{c.current_company ? ` · ${c.current_company}` : ""}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Contact + experience */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 10 }}>
+                  <span style={{ fontSize: 12, color: "var(--text-secondary)", display: "flex", alignItems: "center", gap: 4 }}>
+                    <Mail size={12} />{c.email}
+                  </span>
+                  <span style={{ fontSize: 12, color: "var(--text-secondary)", display: "flex", alignItems: "center", gap: 4 }}>
+                    <Briefcase size={12} />{c.total_experience} yrs exp
+                  </span>
+                </div>
+
+                {/* AI score bar */}
+                {c.ai_profile_score != null && (
+                  <div style={{ marginBottom: 10 }}>
+                    <AIScoreBar score={c.ai_profile_score} />
+                  </div>
+                )}
+
+                {/* Stats + actions */}
+                <div style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "center",
+                  paddingTop: 10, borderTop: "1px solid var(--border-soft)",
+                }}>
+                  <Link to={`/applications?candidate=${c.id}`}
+                    style={{ fontSize: 12, color: "var(--accent)", fontWeight: 600, textDecoration: "none" }}>
+                    {c.application_count ?? 0} application{c.application_count !== 1 ? "s" : ""}
+                  </Link>
+                  <div style={{ display: "flex", gap: 6 }}>
+                    <Link to={`/candidates/${c.id}`}>
+                      <button className="btn btn-icon btn-ghost btn-sm" title="View"><Eye size={14} /></button>
+                    </Link>
+                    <button className="btn btn-icon btn-ghost btn-sm" onClick={() => openEdit(c)} title="Edit"><Pencil size={14} /></button>
+                    <button className="btn btn-icon btn-sm" onClick={() => handleAIScore(c.id)} title="AI Score"
+                      style={{ background: "rgba(196,98,45,0.1)", color: "var(--accent)" }}>
+                      <Cpu size={14} />
+                    </button>
+                    <button className="btn btn-icon btn-danger btn-sm" onClick={() => handleDelete(c.id)}><Trash2 size={14} /></button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
           <Pagination page={page} total={total} onChange={setPage} />
         </>
       )}
 
+      {/* ── Modal ───────────────────────────────────────── */}
       {modalOpen && (
-        <Modal title={editing ? "Edit Candidate" : "Add New Candidate"}
-          onClose={() => setModalOpen(false)} wide
+        <Modal
+          title={editing ? "Edit Candidate" : "Add New Candidate"}
+          onClose={() => setModalOpen(false)}
+          wide
           footer={<>
             <button className="btn btn-secondary" onClick={() => setModalOpen(false)}>Cancel</button>
             <button className="btn btn-primary" onClick={handleSubmit(onSubmit)}>
               {editing ? "Save Changes" : "Add Candidate"}
             </button>
-          </>}>
+          </>}
+        >
           <form style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div className="form-grid-2">
               <div className="form-group">
@@ -200,7 +284,7 @@ export default function Candidates() {
                 <label className="form-label">Source</label>
                 <select {...register("source")} className="form-control">
                   {["portal","linkedin","referral","campus","agency","direct","ai_sourced"].map(s => (
-                    <option key={s} value={s}>{s.replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase())}</option>
+                    <option key={s} value={s}>{s.replace(/_/g," ").replace(/\b\w/g, c => c.toUpperCase())}</option>
                   ))}
                 </select>
               </div>
