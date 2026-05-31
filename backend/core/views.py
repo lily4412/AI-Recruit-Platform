@@ -13,6 +13,8 @@ from .utils import success_response, error_response
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from rest_framework.permissions import AllowAny, IsAuthenticated, permission_classes
+
 # Import models lazily to avoid circular imports
 def _get_counts():
     from main.models import JobRequisition, Candidate, Application
@@ -107,6 +109,7 @@ class DashboardStatsView(APIView):
 
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def home(request):
     return Response({
         "message": "AI Recruitment API is running 🚀",
