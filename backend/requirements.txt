@@ -16,3 +16,4 @@ uritemplate==4.1.1
 PyYAML==6.0.2
 setuptools>=70.0.0
 wheel
+Pillow==10.4.0
