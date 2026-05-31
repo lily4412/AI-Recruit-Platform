@@ -533,3 +533,32 @@ tbody tr:first-child td { border-top: none; }
   .jobs-table-desktop { display: none; }
   .jobs-cards-mobile  { display: block; }
 }
+
+/* ── CandidateDetail responsive ──────────────────────────── */
+.candidatedetail-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+.candidatedetail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.candidatedetail-contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .candidatedetail-layout  { grid-template-columns: 1fr; }
+  .candidatedetail-header  { flex-direction: column; align-items: flex-start; }
+  .candidatedetail-contact { grid-template-columns: 1fr; gap: 8px; }
+}
