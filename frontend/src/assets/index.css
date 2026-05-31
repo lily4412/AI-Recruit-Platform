@@ -395,3 +395,39 @@ tbody tr:first-child td { border-top: none; }
   .login-left          { display: none !important; }
   .login-mobile-logo   { display: flex !important; }
 }
+
+/* ── Dashboard responsive grids ─────────────────────────── */
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.dashboard-chart-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 18px;
+}
+
+.dashboard-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-stats-grid  { grid-template-columns: repeat(4, 1fr); }
+  .dashboard-chart-row   { grid-template-columns: 1fr; }
+  .dashboard-impact-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .dashboard-stats-grid  { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .dashboard-chart-row   { grid-template-columns: 1fr; }
+  .dashboard-impact-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+
+@media (max-width: 400px) {
+  .dashboard-impact-grid { grid-template-columns: 1fr; }
+}
